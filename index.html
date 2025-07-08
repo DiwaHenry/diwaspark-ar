@@ -11,6 +11,8 @@
 	<img id="card" src="./card.png" />
 	<a-asset-item id="EGGModel" src="./egg.glb"></a-asset-item>
 	<a-asset-item id="WaterModel" src="./water.glb"></a-asset-item>
+	<a-asset-item id="intestineModel" src="./intestine.glb"></a-asset-item>
+	      
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -22,6 +24,11 @@
       </a-entity>
       <a-entity mindar-image-target="targetIndex: 1">
         <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#WaterModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
+      </a-entity>
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#intestineModel"
           animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
         >
       </a-entity>
