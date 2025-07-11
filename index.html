@@ -15,6 +15,8 @@
         <a-asset-item id="ExtremophilesModel" src="./assets/3D/Extremophiles.glb"></a-asset-item>
 	<a-asset-item id="HeartModel" src="./assets/3D/Heart.glb"></a-asset-item>
 	<a-asset-item id="MamothModel" src="./assets/3D/Mamoth.glb"></a-asset-item>
+	<a-asset-item id="seismometerModel" src="./assets/3D/seismometer.glb"></a-asset-item>
+	<a-asset-item id="everestModel" src="./assets/3D/everest.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -47,6 +49,16 @@
 
       <a-entity mindar-image-target="targetIndex: 5">
         <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#MamothModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
+      </a-entity>
+	       <a-entity mindar-image-target="targetIndex: 6">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#seismometerModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
+      </a-entity>
+	       <a-entity mindar-image-target="targetIndex: 7">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#everestModel"
           animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
         >
       </a-entity>
