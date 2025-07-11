@@ -13,8 +13,8 @@
 	<a-asset-item id="WaterModel" src="./assets/3D/water.glb"></a-asset-item>
 	<a-asset-item id="intestineModel" src="./assets/3D/intestine.glb"></a-asset-item>
         <a-asset-item id="ExtremophilesModel" src="./assets/3D/Extremophiles.glb"></a-asset-item>
-	<a-asset-item id="ExtremophilesModel" src="./assets/3D/Heart.glb"></a-asset-item>
-	<a-asset-item id="ExtremophilesModel" src="./assets/3D/Mamoth.glb"></a-asset-item>
+	<a-asset-item id="HeartModel" src="./assets/3D/Heart.glb"></a-asset-item>
+	<a-asset-item id="MamothModel" src="./assets/3D/Mamoth.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -34,8 +34,19 @@
           animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
         >
       </a-entity>
-	          <a-entity mindar-image-target="targetIndex: 3">
+      <a-entity mindar-image-target="targetIndex: 3">
         <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.02 0.02 0.02" src="#ExtremophilesModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
+      </a-entity>
+      <a-entity mindar-image-target="targetIndex: 4">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.02 0.02 0.02" src="#HeartModel"
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+        >
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 5">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.02 0.02 0.02" src="#MamothModel"
           animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
         >
       </a-entity>
