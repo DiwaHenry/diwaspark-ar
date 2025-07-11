@@ -5,11 +5,7 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 	 
-	   <style>
-		.a-enter-vr-button {
-		  display: none !important;
-		}
-	</style>		   
+	 		   
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -74,7 +70,7 @@
 </html>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-	  const button = document.querySelector('.your-button-class');
+	  const button = document.querySelector('.a-enter-vr-button');
 	  if (button) {
 	    button.style.display = 'none';
 	  }
