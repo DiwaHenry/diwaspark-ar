@@ -69,10 +69,41 @@
   </body>
 </html>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	  const button = document.querySelector('.a-enter-vr-button');
-	  if (button) {
-	    button.style.display = 'none';
-	  }
-	});
+	 async function storeGLBOnce() {
+    const openRequest = indexedDB.open('GLBCache', 1);
+
+    openRequest.onupgradeneeded = event => {
+      const db = event.target.result;
+      db.createObjectStore('models'); // Create store only if needed
+    };
+
+    openRequest.onsuccess = async event => {
+      const db = event.target.result;
+      const tx = db.transaction('models', 'readonly');
+      const store = tx.objectStore('models');
+      const getRequest = store.get('everest');
+
+      getRequest.onsuccess = async () => {
+        if (getRequest.result) {
+          console.log('Model already cached. Skipping download.');
+        } else {
+          // Not in cache — fetch and store
+          try {
+            const response = await fetch('./assets/3D/egg.glb');
+            const blob = await response.blob();
+
+            const writeTx = db.transaction('models', 'readwrite');
+            const writeStore = writeTx.objectStore('models');
+            writeStore.put(blob, 'everest');
+
+            console.log('Model downloaded and cached.');
+          } catch (err) {
+            console.error('Failed to fetch model:', err);
+          }
+        }
+      };
+    };
+  }
+
+  window.addEventListener('DOMContentLoaded', storeGLBOnce);
 </script>
