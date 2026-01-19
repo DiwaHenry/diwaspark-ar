@@ -1,109 +1,398 @@
-
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-	 
-	 		   
+    <script>
+      // Register touch rotation component for 3D models
+      AFRAME.registerComponent('touch-rotate', {
+        schema: {
+          enabled: {type: 'boolean', default: true}
+        },
+        init: function() {
+          this.isDragging = false;
+          this.previousTouchX = 0;
+          this.previousTouchY = 0;
+          this.rotationX = 0;
+          this.rotationY = 0;
+          this.sensitivity = 0.5;
+
+          // Bind methods
+          this.onTouchStart = this.onTouchStart.bind(this);
+          this.onTouchMove = this.onTouchMove.bind(this);
+          this.onTouchEnd = this.onTouchEnd.bind(this);
+
+          // Add event listeners
+          window.addEventListener('touchstart', this.onTouchStart);
+          window.addEventListener('touchmove', this.onTouchMove);
+          window.addEventListener('touchend', this.onTouchEnd);
+          window.addEventListener('mousedown', this.onTouchStart);
+          window.addEventListener('mousemove', this.onTouchMove);
+          window.addEventListener('mouseup', this.onTouchEnd);
+        },
+        onTouchStart: function(event) {
+          if (!this.data.enabled) return;
+          
+          this.isDragging = true;
+          const touch = event.touches ? event.touches[0] : event;
+          this.previousTouchX = touch.clientX;
+          this.previousTouchY = touch.clientY;
+        },
+        onTouchMove: function(event) {
+          if (!this.isDragging || !this.data.enabled) return;
+          
+          event.preventDefault();
+          const touch = event.touches ? event.touches[0] : event;
+          
+          const deltaX = touch.clientX - this.previousTouchX;
+          const deltaY = touch.clientY - this.previousTouchY;
+          
+          this.rotationY += deltaX * this.sensitivity;
+          this.rotationX -= deltaY * this.sensitivity;
+          
+          // Clamp X rotation to prevent flipping
+          this.rotationX = Math.max(-90, Math.min(90, this.rotationX));
+          
+          this.el.setAttribute('rotation', {
+            x: this.rotationX,
+            y: this.rotationY,
+            z: 0
+          });
+          
+          this.previousTouchX = touch.clientX;
+          this.previousTouchY = touch.clientY;
+        },
+        onTouchEnd: function() {
+          this.isDragging = false;
+        },
+        remove: function() {
+          window.removeEventListener('touchstart', this.onTouchStart);
+          window.removeEventListener('touchmove', this.onTouchMove);
+          window.removeEventListener('touchend', this.onTouchEnd);
+          window.removeEventListener('mousedown', this.onTouchStart);
+          window.removeEventListener('mousemove', this.onTouchMove);
+          window.removeEventListener('mouseup', this.onTouchEnd);
+        }
+      });
+    </script>
+    <style>
+      body { margin: 0; padding: 0; overflow: hidden; }
+      #splash-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        z-index: 9999; transition: opacity 0.6s ease-out;
+      }
+      #splash-screen.fade-out { opacity: 0; pointer-events: none; }
+      .logo-container { position: relative; margin-bottom: 30px; }
+      .logo-text {
+        font-family: 'Arial Black', sans-serif; font-size: clamp(40px, 10vw, 72px);
+        font-weight: 900; color: white; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        letter-spacing: 2px; animation: fadeInScale 1s ease-out; text-align: center; padding: 0 20px;
+      }
+      .logo-subtitle {
+        font-family: 'Arial', sans-serif; font-size: clamp(12px, 3vw, 18px);
+        color: rgba(255, 255, 255, 0.9); text-align: center; margin-top: 10px;
+        letter-spacing: clamp(2px, 1vw, 4px); animation: fadeIn 1.2s ease-out; padding: 0 20px;
+      }
+      .ar-icon {
+        width: clamp(60px, 15vw, 80px); height: clamp(60px, 15vw, 80px);
+        margin-bottom: clamp(20px, 5vh, 40px); animation: float 3s ease-in-out infinite;
+      }
+      .ar-icon img { width: 100%; height: 100%; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3)); border-radius: 6px;}
+      .loading-container { margin-top: clamp(20px, 5vh, 40px); text-align: center; padding: 0 20px; }
+      .loading-text {
+        font-family: 'Arial', sans-serif; font-size: clamp(12px, 2.5vw, 14px);
+        color: rgba(255, 255, 255, 0.8); margin-bottom: 15px; animation: pulse 1.5s ease-in-out infinite;
+      }
+      .loading-bar {
+        width: clamp(150px, 50vw, 200px); height: 4px; background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px; overflow: hidden; margin: 0 auto;
+      }
+      .loading-progress {
+        height: 100%; background: white; border-radius: 10px; animation: loading 2s ease-in-out;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+      @keyframes fadeInScale { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+      @keyframes pulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+      @keyframes loading { from { width: 0%; } to { width: 100%; } }
+      .particles { position: absolute; width: 100%; height: 100%; overflow: hidden; }
+      .particle {
+        position: absolute; background: white; border-radius: 50%; opacity: 0.3;
+        animation: particleFloat 4s ease-in-out infinite;
+      }
+      @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+        50% { transform: translateY(-100px) translateX(20px); opacity: 0.6; }
+      }
+      @media (max-width: 480px) and (orientation: portrait) {
+        .logo-text { font-size: 48px; } .logo-subtitle { font-size: 14px; letter-spacing: 2px; }
+        .ar-icon { width: 60px; height: 60px; margin-bottom: 30px; } .loading-container { margin-top: 30px; }
+      }
+    </style>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+      <div class="particles" id="particles"></div>
+      <div class="ar-icon">
+        <!-- Placeholder for logo - replace with actual image path -->
+            <img src="assets/images/diwaspark_logo.png" />
+      </div>
+      <div class="logo-container">
+        <div class="logo-text">DIWASPARK</div>
+        <div class="logo-subtitle">AUGMENTED REALITY</div>
+      </div>
+      <div class="loading-container">
+        <div class="loading-text">Loading Experience...</div>
+        <div class="loading-bar"><div class="loading-progress"></div></div>
+      </div>
+    </div>
 
-	<a-asset-item id="EGGModel" src="./assets/3D/egg.glb"></a-asset-item>
-	<a-asset-item id="WaterModel" src="./assets/3D/water.glb"></a-asset-item>
-	<a-asset-item id="intestineModel" src="./assets/3D/intestine.glb"></a-asset-item>
-        <a-asset-item id="ExtremophilesModel" src="./assets/3D/Extremophiles.glb"></a-asset-item>
-	<a-asset-item id="HeartModel" src="./assets/3D/Heart.glb"></a-asset-item>
-	<a-asset-item id="MamothModel" src="./assets/3D/Mamoth.glb"></a-asset-item>
-	<a-asset-item id="seismometerModel" src="./assets/3D/seismometer.glb"></a-asset-item>
-	<a-asset-item id="everestModel" src="./assets/3D/everest.glb"></a-asset-item>
+    <!-- AR Scene -->
+    <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind; filterMinCF:0.0001; filterBeta: 0.1; warmupTolerance: 1;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="EGGModel" src="./assets/3D/eggv2.glb"></a-asset-item>
+        <a-asset-item id="WaterModel" src="./assets/3D/waterv2.glb"></a-asset-item>
+        <a-asset-item id="intestineModel" src="./assets/3D/intestinev2.glb"></a-asset-item>
+        <a-asset-item id="ExtremophilesModel" src="./assets/3D/Extremophilesv2.glb"></a-asset-item>
+        <a-asset-item id="HeartModel" src="./assets/3D/Heartv2.glb"></a-asset-item>
+        <a-asset-item id="MamothModel" src="./assets/3D/Mamothv2.glb"></a-asset-item>
+        <a-asset-item id="seismometerModel" src="./assets/3D/seismometerv2.glb"></a-asset-item>
+        <a-asset-item id="everestModel" src="./assets/3D/everestv2.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+      <!-- Target 0: The Egg -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#EGGModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#WaterModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="15 15 15" src="#intestineModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.02 0.02 0.02" src="#ExtremophilesModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
-      </a-entity>
-      <a-entity mindar-image-target="targetIndex: 4">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#HeartModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+        <!-- Model positioned to the LEFT -->
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#EGGModel" touch-rotate></a-gltf-model>
+        <!-- Text positioned to the RIGHT with no overlap -->
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="An Egg-cellent Source of Nutrition" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Chicken eggs are highly nutritious. They are rich in protein, fat, and essential vitamins, such as A, D, and E. Experts recommend eating one to two chicken eggs a day." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
       </a-entity>
 
+      <!-- Target 1: Water -->
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#WaterModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="How a Hand Pump Draws Water" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="A hand pump is an ancient technology used to lift water. Its mechanism involves creating a vacuum, which then draws water up from the ground." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 2: Digestive System -->
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#intestineModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Small Intestine versus Large Intestine" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="The human intestine is divided into two sections: the small intestine and the large intestine. The small intestine primarily absorbs nutrients from digested food, while the large intestine mainly absorbs electrolytes and water." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 3: Extremophiles -->
+      <a-entity mindar-image-target="targetIndex: 3">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#ExtremophilesModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Life's Extremophiles" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Archaeans are unicellular and prokaryotic organisms, just like bacteria. However, unlike bacteria, archaeans can tolerate extreme environmental conditions, and their cell walls are composed of polysaccharides." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 4: Heart -->
+      <a-entity mindar-image-target="targetIndex: 4">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#HeartModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="The Amazing Human Heart" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="The human heart is a remarkable organ. Its main function is to pump blood throughout the body. On the average, it beats more than 100 000 times a day. Amazing, isn't it?" 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 5: Mammoth -->
       <a-entity mindar-image-target="targetIndex: 5">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#MamothModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#MamothModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Woolly Mammoths' Ice Age Home" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Woolly mammoths were herbivores that lived in steppe tundras. These ecosystems were cold, dry regions covered with low shrubs, sedges, and grasses." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
       </a-entity>
-	       <a-entity mindar-image-target="targetIndex: 6">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#seismometerModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+
+      <!-- Target 6: Seismometer -->
+      <a-entity mindar-image-target="targetIndex: 6">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#seismometerModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Sensitive Seismometer" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="A seismometer is a tool scientists use to detect and measure seismic waves. Extremely sensitive to ground movements, it can detect shifts as small as one ten-millionth of a centimeter!" 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
       </a-entity>
-	       <a-entity mindar-image-target="targetIndex: 7">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.2 0.2 0.2" src="#everestModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+
+      <!-- Target 7: Mount Everest -->
+      <a-entity mindar-image-target="targetIndex: 7">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#everestModel" touch-rotate></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Mount Everest: The Growing Giant" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Mount Everest, the world's highest mountain, was formed due to the convergent plate boundary between the Indian and Eurasian tectonic plates. Scientists say that Mount Everest continues to grow even today." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
       </a-entity>
-	    
     </a-scene>
+
+    <script>
+      // Create floating particles
+      function createParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.width = Math.random() * 4 + 2 + 'px';
+          particle.style.height = particle.style.width;
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.top = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 4 + 's';
+          particle.style.animationDuration = Math.random() * 3 + 3 + 's';
+          container.appendChild(particle);
+        }
+      }
+
+      // Hide splash screen after loading
+      function hideSplashScreen() {
+        const splash = document.getElementById('splash-screen');
+        setTimeout(() => {
+          splash.classList.add('fade-out');
+          setTimeout(() => {
+            splash.style.display = 'none';
+          }, 600);
+        }, 2500); 
+      }
+
+      // Initialize
+      window.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+        hideSplashScreen();
+        storeGLBOnce();
+      });
+
+      // Original GLB caching function
+      async function storeGLBOnce() {
+        const openRequest = indexedDB.open('GLBCache', 1);
+
+        openRequest.onupgradeneeded = event => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains('models')) {
+            db.createObjectStore('models');
+          }
+        };
+
+        openRequest.onsuccess = async event => {
+          const db = event.target.result;
+          const tx = db.transaction('models', 'readonly');
+          const store = tx.objectStore('models');
+          const getRequest = store.get('everest');
+
+          getRequest.onsuccess = async () => {
+            if (getRequest.result) {
+              console.log('Model already cached. Skipping download.');
+            } else {
+              try {
+                // const response = await fetch('./assets/3D/everest.glb');
+                // const blob = await response.blob();
+
+                // const writeTx = db.transaction('models', 'readwrite');
+                // const writeStore = writeTx.objectStore('models');
+                // writeStore.put(blob, 'everest');
+
+                // console.log('Model downloaded and cached.');
+              } catch (err) {
+                console.error('Failed to fetch model:', err);
+              }
+            }
+          };
+        };
+      }
+    </script>
   </body>
 </html>
-<script>
-	 async function storeGLBOnce() {
-    const openRequest = indexedDB.open('GLBCache', 1);
-
-    openRequest.onupgradeneeded = event => {
-      const db = event.target.result;
-      db.createObjectStore('models'); // Create store only if needed
-    };
-
-    openRequest.onsuccess = async event => {
-      const db = event.target.result;
-      const tx = db.transaction('models', 'readonly');
-      const store = tx.objectStore('models');
-      const getRequest = store.get('everest');
-
-      getRequest.onsuccess = async () => {
-        if (getRequest.result) {
-          console.log('Model already cached. Skipping download.');
-        } else {
-          // Not in cache — fetch and store
-          try {
-            const response = await fetch('./assets/3D/egg.glb');
-            const blob = await response.blob();
-
-            const writeTx = db.transaction('models', 'readwrite');
-            const writeStore = writeTx.objectStore('models');
-            writeStore.put(blob, 'everest');
-
-            console.log('Model downloaded and cached.');
-          } catch (err) {
-            console.error('Failed to fetch model:', err);
-          }
-        }
-      };
-    };
-  }
-
-  window.addEventListener('DOMContentLoaded', storeGLBOnce);
-</script>
