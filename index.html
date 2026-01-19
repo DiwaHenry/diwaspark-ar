@@ -485,14 +485,15 @@
           splash.classList.add('fade-out');
           setTimeout(() => {
             splash.style.display = 'none';
-            // Enter fullscreen after splash screen
-            enterFullscreen();
           }, 600);
         }, 2500); 
       }
 
       // Initialize
       window.addEventListener('DOMContentLoaded', () => {
+        // Enter fullscreen immediately before splash screen
+        enterFullscreen();
+        
         createParticles();
         hideSplashScreen();
         storeGLBOnce();
