@@ -121,6 +121,86 @@
         pointer-events: none; 
       }
       
+      #fullscreen-prompt {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        transition: opacity 0.6s ease-out;
+      }
+      
+      #fullscreen-prompt.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .fullscreen-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 30px;
+        animation: float 3s ease-in-out infinite;
+      }
+      
+      .fullscreen-icon svg {
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
+      }
+      
+      .fullscreen-title {
+        font-family: 'Arial Black', sans-serif;
+        font-size: clamp(24px, 6vw, 36px);
+        font-weight: 900;
+        color: white;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+        text-align: center;
+        padding: 0 20px;
+        margin-bottom: 15px;
+      }
+      
+      .fullscreen-subtitle {
+        font-family: 'Arial', sans-serif;
+        font-size: clamp(14px, 3vw, 16px);
+        color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+        padding: 0 30px;
+        margin-bottom: 40px;
+        max-width: 500px;
+      }
+      
+      .fullscreen-button {
+        padding: 18px 60px;
+        font-family: 'Arial Black', sans-serif;
+        font-size: 18px;
+        font-weight: 900;
+        color: #667eea;
+        background: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      .fullscreen-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+      
+      .fullscreen-button:active {
+        transform: scale(0.98);
+      }
+      
       .logo-container { 
         position: relative; 
         margin-bottom: 30px; 
@@ -262,6 +342,18 @@
         <div class="loading-text">Loading Experience...</div>
         <div class="loading-bar"><div class="loading-progress"></div></div>
       </div>
+    </div>
+
+    <!-- Fullscreen Prompt -->
+    <div id="fullscreen-prompt" class="hidden">
+      <div class="fullscreen-icon">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </div>
+      <div class="fullscreen-title">Ready for AR Experience</div>
+      <div class="fullscreen-subtitle">Tap the button below to enter fullscreen mode for the best augmented reality experience</div>
+      <button class="fullscreen-button" id="enter-fullscreen-btn">ENTER FULLSCREEN</button>
     </div>
 
     <!-- AR Scene -->
@@ -489,13 +581,43 @@
         }, 2500); 
       }
 
+      // Hide splash screen after loading
+      function hideSplashScreen() {
+        const splash = document.getElementById('splash-screen');
+        const fullscreenPrompt = document.getElementById('fullscreen-prompt');
+        
+        setTimeout(() => {
+          splash.classList.add('fade-out');
+          setTimeout(() => {
+            splash.style.display = 'none';
+            // Show fullscreen prompt after splash screen fades out
+            fullscreenPrompt.classList.remove('hidden');
+          }, 600);
+        }, 2500); 
+      }
+
+      // Setup fullscreen button
+      function setupFullscreenButton() {
+        const btn = document.getElementById('enter-fullscreen-btn');
+        const fullscreenPrompt = document.getElementById('fullscreen-prompt');
+        
+        btn.addEventListener('click', async () => {
+          await enterFullscreen();
+          hideAddressBar();
+          
+          // Hide fullscreen prompt
+          fullscreenPrompt.classList.add('hidden');
+          setTimeout(() => {
+            fullscreenPrompt.style.display = 'none';
+          }, 600);
+        });
+      }
+
       // Initialize
       window.addEventListener('DOMContentLoaded', () => {
-        // Enter fullscreen immediately before splash screen
-        enterFullscreen();
-        
         createParticles();
         hideSplashScreen();
+        setupFullscreenButton();
         storeGLBOnce();
         
         // Hide address bar on mobile
