@@ -236,6 +236,33 @@
 	    0%, 100% { top: 0% }
       50% { top: calc(100% - 10px) }
   }
+
+  /* Zoom controls */
+  #zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #zoom-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  #zoom-controls button:active {
+    transform: scale(0.95);
+  }
   
   .loading-container { 
     margin-top: clamp(20px, 5vh, 40px); 
