@@ -38,8 +38,21 @@
       <button class="fullscreen-button" id="enter-fullscreen-btn">ENTER FULLSCREEN</button>
     </div>
 
+    <!-- logo on the scene -->
+    <div class="ar-logo">
+      <img src="assets/images/diwaspark_transparent.png"/>
+    </div>
+
+    <!-- Scanning Overlay -->
+    <div id="scanning-overlay" class="hidden">
+        <div class="inner">
+	        <img src="assets/images/SEM_logo.jpg"/>
+	      <div class="scanline"></div>
+      </div>
+    </div>
+
     <!-- AR Scene -->
-    <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind; uiLoading: false; filterMinCF:0.0001; filterBeta: 0.1; warmupTolerance: 1;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
+    <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind; uiError:no; uiScanning: #scanning-overlay; filterMinCF:0.0001; filterBeta: 0.1; warmupTolerance: 1;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
       <a-assets>
         <a-asset-item id="EGGModel" src="./assets/3D/eggv2.glb"></a-asset-item>
         <a-asset-item id="WaterModel" src="./assets/3D/waterv2.glb"></a-asset-item>
