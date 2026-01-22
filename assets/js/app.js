@@ -30,8 +30,10 @@ function hideAddressBar() {
 // Create floating particles
 function createParticles() {
   const container = document.getElementById('particles');
+  const container1 = document.getElementById('particles1');
   for (let i = 0; i < 20; i++) {
     const particle = document.createElement('div');
+    const particle1 = document.createElement('div');
     particle.className = 'particle';
     particle.style.width = Math.random() * 4 + 2 + 'px';
     particle.style.height = particle.style.width;
@@ -39,7 +41,15 @@ function createParticles() {
     particle.style.top = Math.random() * 100 + '%';
     particle.style.animationDelay = Math.random() * 4 + 's';
     particle.style.animationDuration = Math.random() * 3 + 3 + 's';
+    particle1.className = 'particle';
+    particle1.style.width = Math.random() * 4 + 2 + 'px';
+    particle1.style.height = particle.style.width;
+    particle1.style.left = Math.random() * 100 + '%';
+    particle1.style.top = Math.random() * 100 + '%';
+    particle1.style.animationDelay = Math.random() * 4 + 's';
+    particle1.style.animationDuration = Math.random() * 3 + 3 + 's';
     container.appendChild(particle);
+    container1.appendChild(particle1);
   }
 }
 

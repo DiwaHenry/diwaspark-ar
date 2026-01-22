@@ -79,25 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Reset scale for a specific item
   function resetScale(item) {
-    const scaleFactor = 1.0; // Reset to initial scale
-    
-    // Reset model
+    // Reset model only
     item.model.setAttribute('scale', `${item.initialModelScale} ${item.initialModelScale} ${item.initialModelScale}`);
     item.model.setAttribute('position', `${item.initialModelX} ${item.modelY} ${item.modelZ}`);
     
-    // Reset plane
-    item.plane.setAttribute('width', item.initialPlaneWidth);
-    item.plane.setAttribute('height', item.initialPlaneHeight);
-    item.plane.setAttribute('position', `${item.initialPlaneX} ${item.planeY} ${item.planeZ}`);
-    
-    // Reset text
-    const texts = item.plane.querySelectorAll('a-text');
-    texts.forEach((text, index) => {
-      const baseWidth = 1;
-      text.setAttribute('width', baseWidth);
-      const originalY = index === 0 ? 0.25 : -0.08;
-      text.setAttribute('position', `0 ${originalY} 0.01`);
-    });
+    // Plane stays at original size (no reset needed as it never changes)
     
     // Update button states
     updateButtonStates();
@@ -143,36 +129,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const isVisible = item.target.object3D.visible;
         
         if (isVisible) {
-          // Scale the 3D model
+          // Scale ONLY the 3D model
           const newModelScale = item.initialModelScale * scaleFactor;
           item.model.setAttribute('scale', `${newModelScale} ${newModelScale} ${newModelScale}`);
           
-          // Adjust model position to maintain spacing
-          const newModelX = item.initialModelX * scaleFactor;
-          item.model.setAttribute('position', `${newModelX} ${item.modelY} ${item.modelZ}`);
+          // Keep model position fixed (no position adjustment)
+          item.model.setAttribute('position', `${item.initialModelX} ${item.modelY} ${item.modelZ}`);
           
-          // Scale the text plane
-          const newPlaneWidth = item.initialPlaneWidth * scaleFactor;
-          const newPlaneHeight = item.initialPlaneHeight * scaleFactor;
-          item.plane.setAttribute('width', newPlaneWidth);
-          item.plane.setAttribute('height', newPlaneHeight);
-          
-          // Adjust plane position to maintain spacing
-          const newPlaneX = item.initialPlaneX * scaleFactor;
-          item.plane.setAttribute('position', `${newPlaneX} ${item.planeY} ${item.planeZ}`);
-          
-          // Adjust text sizes proportionally
-          const texts = item.plane.querySelectorAll('a-text');
-          texts.forEach((text, index) => {
-            const baseWidth = index === 0 ? 1 : 1; // Title and body text
-            const newWidth = baseWidth * scaleFactor;
-            text.setAttribute('width', newWidth);
-            
-            // Adjust text positions to maintain layout
-            const currentPos = text.getAttribute('position');
-            const newY = (index === 0 ? 0.25 : -0.08) * scaleFactor;
-            text.setAttribute('position', `0 ${newY} 0.01`);
-          });
+          // Keep plane at original size and position (no changes)
+          // The description stays the same regardless of model zoom
         }
       }
     });
