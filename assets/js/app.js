@@ -108,12 +108,6 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('orientationchange', hideAddressBar);
   window.addEventListener('resize', hideAddressBar);
 
-  // Lock to landscape mode
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('landscape').catch(err => {
-      console.log('Orientation lock not supported:', err);
-    });
-  }
 });
 
 // Prevent pull-to-refresh
