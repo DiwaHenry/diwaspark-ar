@@ -340,20 +340,6 @@
     0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
     50% { transform: translateY(-100px) translateX(20px); opacity: 0.6; }
   }
-
-  /* Rotate portrait to landscape if needed */
-@media screen and (orientation: portrait) {
-  html {
-    transform: rotate(90deg);
-    transform-origin: left top;
-    width: 100vh;
-    height: 100vw;
-    overflow-x: hidden;
-    position: absolute;
-    top: 0;
-    left: 100%;
-  }
-}
   
   @media (max-width: 480px) and (orientation: portrait) {
     .logo-subtitle { font-size: 14px; letter-spacing: 2px; }
