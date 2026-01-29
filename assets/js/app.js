@@ -1,3 +1,17 @@
+const fullscreenBtn = document.getElementById("enter-fullscreen-btn");
+const reminder = document.getElementById("reminder");
+
+function getOrientation() {
+  if (screen.orientation?.type) {
+    return screen.orientation.type.includes("landscape")
+      ? "landscape"
+      : "portrait";
+  }
+  return window.innerWidth > window.innerHeight
+    ? "landscape"
+    : "portrait";
+}
+
 // Fullscreen functionality
 function enterFullscreen() {
   const elem = document.documentElement;
@@ -77,6 +91,7 @@ function hideSplashScreen() {
       fullscreenPrompt.classList.remove('hidden');
     }, 600);
   }, 2500); 
+
 }
 
 // Setup fullscreen button
@@ -93,11 +108,30 @@ function setupFullscreenButton() {
     setTimeout(() => {
       fullscreenPrompt.style.display = 'none';
     }, 600);
-  });
+
+    window.location.replace("scanner.php");
+  }); 
 }
 
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
+  
+  if(getOrientation() === "landscape"){
+    fullscreenBtn.removeAttribute("disabled");
+  }else{
+     reminder.style.display = "block";
+  }
+
+  screen.orientation?.addEventListener("change", ()=>{
+    if(getOrientation() === "landscape"){
+       fullscreenBtn.removeAttribute("disabled");
+       reminder.style.display = "none";
+    }else{
+      fullscreenBtn.setAttribute("disabled", true);
+      reminder.style.display = "block";
+    }
+  })
+
   createParticles();
   hideSplashScreen();
   setupFullscreenButton();
