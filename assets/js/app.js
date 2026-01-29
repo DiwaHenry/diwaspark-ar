@@ -109,7 +109,7 @@ function setupFullscreenButton() {
       fullscreenPrompt.style.display = 'none';
     }, 600);
 
-    window.location.replace("scanner.php");
+    window.location.replace("scanner.html");
   }); 
 }
 
