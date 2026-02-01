@@ -210,16 +210,35 @@
                 : "portrait";
         }
 
+        // Fullscreen functionality
+        function enterFullscreen() {
+          const elem = document.documentElement;
+          
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+          } else if (elem.msRequestFullscreen) { // IE11
+            elem.msRequestFullscreen();
+          } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+          }
+        }
+
         function hideAddressBar() {
             // Must run after layout is painted so the page is tall enough to scroll
             window.scrollTo(0, 1);
         }
 
+        // call enterFullscreen
+        enterFullscreen()
         // 1) Fire after a short delay so the browser has finished the initial paint
         setTimeout(hideAddressBar, 100);
 
         // 2) Fire again once everything (images, scripts, etc.) is fully loaded
         window.addEventListener("load", function () {
+            // call enterFullscreen
+            enterFullscreen()
             setTimeout(hideAddressBar, 100);
         });
 
@@ -231,6 +250,9 @@
             if (getOrientation() === "portrait") {
                 window.location.replace("index.html");
             }
+
+            // call enterFullscreen
+            enterFullscreen()
             setTimeout(hideAddressBar, 100);
         });
    </script>
