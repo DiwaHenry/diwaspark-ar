@@ -211,18 +211,28 @@
         }
 
         function hideAddressBar() {
-          window.scrollTo(0, 1);
+            // Must run after layout is painted so the page is tall enough to scroll
+            window.scrollTo(0, 1);
         }
 
-          // Hide address bar on mobile
-        hideAddressBar();
+        // 1) Fire after a short delay so the browser has finished the initial paint
+        setTimeout(hideAddressBar, 100);
 
-        screen.orientation?.addEventListener("change", ()=>{
-            if(getOrientation() === "portrait"){
+        // 2) Fire again once everything (images, scripts, etc.) is fully loaded
+        window.addEventListener("load", function () {
+            setTimeout(hideAddressBar, 100);
+        });
+
+        // 3) Re-hide on resize (covers orientation changes and any layout shifts)
+        window.addEventListener("resize", hideAddressBar);
+
+        // 4) Handle orientation changes
+        screen.orientation?.addEventListener("change", function () {
+            if (getOrientation() === "portrait") {
                 window.location.replace("index.html");
             }
-            hideAddressBar()
-        })
+            setTimeout(hideAddressBar, 100);
+        });
    </script>
   </body>
 </html>
