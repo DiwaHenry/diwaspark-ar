@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="assets/css/main.css">
   </head>
   <body>
+
+    <!-- Fullscreen Prompt -->
+    <div id="fullscreen-prompt" class="hidden">
+      <div class="particles" id="particles1"></div>
+      <div class="fullscreen-icon">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </div>
+      <div class="fullscreen-title">Ready for <img src="assets/images/AR.png" alt="AR" onerror="this.style.display='none'" > Experience</div>
+      <div class="fullscreen-subtitle">Tap the button below to enter fullscreen mode for the best augmented reality experience</div>
+      <button class="fullscreen-button" id="enter-fullscreen-btn">ENTER FULLSCREEN</button>
+    </div>
+
     <!-- logo on the scene -->
     <div class="ar-logo">
       <img src="assets/images/diwaspark_transparent.png"/>
@@ -32,7 +46,7 @@
 
     <!-- AR Scene -->
     <a-scene mindar-image="imageTargetSrc: ./BB-IISSUE1-25-26.mind; uiError:no; uiScanning: #scanning-overlay; filterMinCF:0.001; filterBeta: 0.01; warmupTolerance: 5; missTolerance: 5" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights, antialias: true, alpha: true" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
-      <a-assets>
+      <!-- <a-assets>
         <a-asset-item id="EGGModel" src="./assets/3D/eggv2.glb"></a-asset-item>
         <a-asset-item id="WaterModel" src="./assets/3D/waterv2.glb"></a-asset-item>
         <a-asset-item id="intestineModel" src="./assets/3D/intestinev2.glb"></a-asset-item>
@@ -41,13 +55,13 @@
         <a-asset-item id="MamothModel" src="./assets/3D/Mamothv2.glb"></a-asset-item>
         <a-asset-item id="seismometerModel" src="./assets/3D/seismometerv2.glb"></a-asset-item>
         <a-asset-item id="everestModel" src="./assets/3D/everestv2.glb"></a-asset-item>
-      </a-assets>
+      </a-assets> -->
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- Target 0: The Egg -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#EGGModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/eggv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="An Egg-cellent Source of Nutrition" 
                   color="#667eea" 
@@ -66,7 +80,7 @@
 
       <!-- Target 1: Water -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#WaterModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/waterv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="How a Hand Pump Draws Water" 
                   color="#667eea" 
@@ -85,7 +99,7 @@
 
       <!-- Target 2: Digestive System -->
       <a-entity mindar-image-target="targetIndex: 2">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#intestineModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/intestinev2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="Small Intestine versus Large Intestine" 
                   color="#667eea" 
@@ -104,7 +118,7 @@
 
       <!-- Target 3: Extremophiles -->
       <a-entity mindar-image-target="targetIndex: 3">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#ExtremophilesModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/Extremophilesv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="Life's Extremophiles" 
                   color="#667eea" 
@@ -123,7 +137,7 @@
 
       <!-- Target 4: Heart -->
       <a-entity mindar-image-target="targetIndex: 4">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#HeartModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/Heartv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="The Amazing Human Heart" 
                   color="#667eea" 
@@ -142,7 +156,7 @@
 
       <!-- Target 5: Mammoth -->
       <a-entity mindar-image-target="targetIndex: 5">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#MamothModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/Mamothv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="Woolly Mammoths' Ice Age Home" 
                   color="#667eea" 
@@ -161,7 +175,7 @@
 
       <!-- Target 6: Seismometer -->
       <a-entity mindar-image-target="targetIndex: 6">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#seismometerModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/seismometerv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="Sensitive Seismometer" 
                   color="#667eea" 
@@ -180,7 +194,7 @@
 
       <!-- Target 7: Mount Everest -->
       <a-entity mindar-image-target="targetIndex: 7">
-        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="#everestModel" touch-rotate ></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="./assets/3D/everestv2.glb" touch-rotate ></a-gltf-model>
         <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
           <a-text value="Mount Everest: The Growing Giant" 
                   color="#667eea" 
@@ -198,63 +212,6 @@
       </a-entity>
     </a-scene>
    <script src="assets/js/zoom.js"></script>
-   <script>
-        function getOrientation() {
-            if (screen.orientation?.type) {
-                return screen.orientation.type.includes("landscape")
-                ? "landscape"
-                : "portrait";
-            }
-            return window.innerWidth > window.innerHeight
-                ? "landscape"
-                : "portrait";
-        }
-
-        // Fullscreen functionality
-        function enterFullscreen() {
-          const elem = document.documentElement;
-          
-          if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-          } else if (elem.webkitRequestFullscreen) { // Safari
-            elem.webkitRequestFullscreen();
-          } else if (elem.msRequestFullscreen) { // IE11
-            elem.msRequestFullscreen();
-          } else if (elem.mozRequestFullScreen) { // Firefox
-            elem.mozRequestFullScreen();
-          }
-        }
-
-        function hideAddressBar() {
-            // Must run after layout is painted so the page is tall enough to scroll
-            window.scrollTo(0, 1);
-        }
-
-        // call enterFullscreen
-        enterFullscreen()
-        // 1) Fire after a short delay so the browser has finished the initial paint
-        setTimeout(hideAddressBar, 100);
-
-        // 2) Fire again once everything (images, scripts, etc.) is fully loaded
-        window.addEventListener("load", function () {
-            // call enterFullscreen
-            enterFullscreen()
-            setTimeout(hideAddressBar, 100);
-        });
-
-        // 3) Re-hide on resize (covers orientation changes and any layout shifts)
-        window.addEventListener("resize", hideAddressBar);
-
-        // 4) Handle orientation changes
-        screen.orientation?.addEventListener("change", function () {
-            if (getOrientation() === "portrait") {
-                window.location.replace("index.html");
-            }
-
-            // call enterFullscreen
-            enterFullscreen()
-            setTimeout(hideAddressBar, 100);
-        });
-   </script>
+   <script src="assets/js/app.js"></script>
   </body>
 </html>
