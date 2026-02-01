@@ -214,10 +214,8 @@
           window.scrollTo(0, 1);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
           // Hide address bar on mobile
-          hideAddressBar();
-        });
+        hideAddressBar();
 
         screen.orientation?.addEventListener("change", ()=>{
             if(getOrientation() === "portrait"){
