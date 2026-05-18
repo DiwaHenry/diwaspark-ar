@@ -1,0 +1,456 @@
+ /* ═══════════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ═══════════════════════════════════════════
+       BASE — mobile-first
+    ═══════════════════════════════════════════ */
+    html {
+      height: 100%;
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100%;
+      min-height: 100svh;
+      width: 100%;
+      background: linear-gradient(135deg, #9cb5ff 0%, #e794ff 50%, #9cb5ff 100%);
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right)
+               env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    /* ═══════════════════════════════════════════
+       PARTICLES
+    ═══════════════════════════════════════════ */
+    .particles {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.45;
+      animation: particleFloat var(--dur, 4s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes particleFloat {
+      0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+      50%      { transform: translateY(-70px) translateX(12px); opacity: 0.6; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PAGE WRAPPER
+    ═══════════════════════════════════════════ */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      padding: 32px 20px;
+      gap: 20px;
+      min-height: 100svh;
+    }
+
+    /* ═══════════════════════════════════════════
+       BRANDING BLOCK (icon + logo)
+    ═══════════════════════════════════════════ */
+    .branding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .ar-icon {
+      width: 56px; height: 56px;
+      margin-bottom: 12px;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 15px rgba(0,0,0,0.25));
+    }
+    .ar-icon svg { width: 100%; height: 100%; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0);   }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .logo-img {
+      display: block;
+      width: 120px;
+      margin: 20px auto 0 auto;
+    }
+
+    .logo-subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      letter-spacing: 4px;
+      margin-top: 8px;
+      text-transform: uppercase;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    /* ═══════════════════════════════════════════
+       CARD
+    ═══════════════════════════════════════════ */
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid rgba(255,255,255,0.55);
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 8px 40px rgba(120,80,200,0.25),
+                  inset 0 1px 0 rgba(255,255,255,0.6);
+      animation: cardIn 0.65s cubic-bezier(0.16,1,0.3,1) both;
+      flex-shrink: 0;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       CARD INNER
+    ═══════════════════════════════════════════ */
+    .card-title {
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      margin-bottom: 22px;
+    }
+
+    .field { margin-bottom: 14px; }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    .input-wrap { position: relative; }
+
+    .input-wrap input {
+      width: 100%;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: rgba(255,255,255,0.32);
+      border: 1.5px solid rgba(255,255,255,0.6);
+      border-radius: 50px;
+      padding: 12px 44px 12px 16px;
+      outline: none;
+      -webkit-appearance: none;
+      transition: background .25s, border-color .25s, box-shadow .25s;
+    }
+    .input-wrap input::placeholder { color: rgba(255,255,255,0.58); }
+    .input-wrap input:focus {
+      background: rgba(255,255,255,0.48);
+      border-color: #fff;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.22);
+    }
+
+    .input-icon {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.72);
+      pointer-events: none;
+      display: flex; align-items: center;
+    }
+
+    .eye-btn {
+      position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.72);
+      padding: 6px;
+      display: flex; align-items: center;
+      justify-content: center;
+      min-width: 36px; min-height: 36px;
+      transition: color .2s;
+    }
+    .eye-btn:hover { color: #fff; }
+
+    .btn-login {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #8b5cf6;
+      background: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+      transition: transform .25s, box-shadow .25s, opacity .25s;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .btn-login:hover  { transform: scale(1.03); box-shadow: 0 12px 36px rgba(0,0,0,0.28); animation: none; }
+    .btn-login:active { transform: scale(0.98); }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .88; }
+    }
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .card-footer {
+      font-size: 10px;
+      color: rgba(255,255,255,0.62);
+      letter-spacing: 1px;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       REMINDER BAR
+    ═══════════════════════════════════════════ */
+    .reminder-overlay {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 9999; display: none;
+    }
+    .reminders {
+      width: 100%; background: #aed6f9;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .reminders p { font-size: 14px; padding: 8px 12px; }
+
+    /* ═══════════════════════════════════════════
+       ERROR MESSAGE
+    ═══════════════════════════════════════════ */
+
+    .error-message {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 15px auto;
+      padding: 8px 12px;
+      border-radius: 6px;
+      
+      background-color: #ffe5e5;
+      color: #d8000c;
+      border: 1px solid #ffb3b3;
+
+      font-size: 14px;
+      text-align: center;
+      
+      display: none; /* hidden by default */
+    }
+
+    /* Optional: smooth appearance */
+    .error-message.show {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ═══════════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════════ */
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ════════════════════════════════════════════════════════ */
+
+    /* ── Mobile portrait (≤ 480px) ───────────── */
+    @media (max-width: 480px) and (orientation: portrait) {
+      .page-wrap   { padding: 28px 16px 24px; gap: 16px; }
+      .ar-icon     { width: 48px; height: 48px; margin-bottom: 10px; }
+      .logo-img    { width: 125px; }
+      .logo-subtitle { font-size: 13px; letter-spacing: 3px; }
+      .login-card  { padding: 22px 18px 20px; border-radius: 20px; }
+      .card-title  { font-size: 16px; margin-bottom: 18px; }
+      .field       { margin-bottom: 12px; }
+      .field label { font-size: 9px; }
+      .input-wrap input { padding: 11px 42px 11px 14px; }
+      .btn-login   { font-size: 14px; min-height: 46px; }
+      .card-footer { font-size: 9px; }
+    }
+
+    /* ── Very small phones (≤ 360px) ─────────── */
+    @media (max-width: 360px) and (orientation: portrait) {
+      .page-wrap   { padding: 20px 12px 18px; gap: 12px; }
+      .ar-icon     { width: 40px; height: 40px; margin-bottom: 8px; }
+      .logo-img    { width: 128px; }
+      .logo-subtitle { font-size: 13px; letter-spacing: 2px; }
+      .login-card  { padding: 18px 14px 16px; border-radius: 18px; }
+      .card-title  { font-size: 14px; margin-bottom: 14px; }
+      .field       { margin-bottom: 10px; }
+      .btn-login   { font-size: 13px; min-height: 44px; }
+    }
+
+    /* ── Mobile landscape (≤ 767px landscape) ── */
+    @media (max-width: 767px) and (orientation: landscape) {
+      .page-wrap {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 24px;
+        padding: 16px 24px;
+        min-height: 100svh;
+      }
+      .branding    { gap: 0; }
+      .ar-icon     { width: 38px; height: 38px; margin-bottom: 8px; }
+      .logo-img    { width: 128px; }
+      .logo-subtitle { font-size: 13px; letter-spacing: 2px; margin-top: 5px; }
+      .login-card  { max-width: 320px; padding: 16px 18px 14px; border-radius: 18px; }
+      .card-title  { font-size: 14px; margin-bottom: 12px; letter-spacing: 1.5px; }
+      .field       { margin-bottom: 9px; }
+      .field label { font-size: 8px; margin-bottom: 4px; }
+      .input-wrap input { padding: 9px 40px 9px 13px; font-size: 14px; }
+      .btn-login   { font-size: 13px; min-height: 40px; }
+      .card-footer { font-size: 8px; margin-top: 6px; }
+    }
+
+    /* ── Very short landscape (height ≤ 400px) ── */
+    @media (orientation: landscape) and (max-height: 400px) {
+      .page-wrap   { gap: 16px; padding: 10px 20px; }
+      .ar-icon     { width: 32px; height: 32px; margin-bottom: 6px; }
+      .logo-img    { width: 116px; }
+      .logo-subtitle { font-size: 13px; letter-spacing: 1.5px; }
+      .login-card  { padding: 12px 14px 10px; }
+      .card-title  { font-size: 12px; margin-bottom: 10px; }
+      .field       { margin-bottom: 7px; }
+      .field label { font-size: 8px; margin-bottom: 3px; }
+      .input-wrap input { padding: 7px 36px 7px 12px; font-size: 13px; }
+      .btn-login   { font-size: 12px; min-height: 36px; }
+      .card-footer { margin-top: 6px; font-size: 8px; }
+    }
+
+    /* ── Tablet portrait (481px – 1024px) ──────── */
+    @media (min-width: 481px) and (max-width: 1024px) and (orientation: portrait) {
+      .page-wrap   { padding: 40px 32px 32px; gap: 22px; }
+      .ar-icon     { width: 64px; height: 64px; margin-bottom: 14px; }
+      .logo-img    { width: 180px; }
+      .logo-subtitle { font-size: 18px; letter-spacing: 5px; }
+      .login-card  { max-width: 460px; padding: 32px 36px 28px; }
+      .card-title  { font-size: 20px; margin-bottom: 26px; }
+      .field       { margin-bottom: 16px; }
+      .field label { font-size: 11px; }
+      .input-wrap input { padding: 14px 46px 14px 18px; }
+      .btn-login   { font-size: 16px; min-height: 54px; }
+      .card-footer { font-size: 11px; margin-top: 10px; }
+    }
+
+    /* ── Tablet landscape (481px – 1024px land) ── */
+    @media (min-width: 481px) and (max-width: 1024px) and (orientation: landscape) {
+      .page-wrap {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 48px;
+        padding: 20px 48px;
+      }
+      .ar-icon     { width: 60px; height: 60px; margin-bottom: 14px; }
+      .logo-img    { width: 130px; }
+      .logo-subtitle { font-size: 12px; letter-spacing: 4px; }
+      .login-card  { max-width: 400px; padding: 26px 30px 24px; }
+      .card-title  { font-size: 18px; margin-bottom: 20px; }
+      .field       { margin-bottom: 14px; }
+      .field label { font-size: 10px; }
+      .input-wrap input { padding: 12px 44px 12px 16px; }
+      .btn-login   { font-size: 15px; min-height: 50px; }
+      .card-footer { font-size: 10px; margin-top: 8px; }
+    }
+
+    /* ── Desktop (≥ 1025px) ────────────────────── */
+    @media (min-width: 1025px) {
+      .page-wrap {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 72px;
+        padding: 48px 80px;
+        min-height: 100svh;
+      }
+      .branding    { gap: 0; }
+      .ar-icon     { width: 80px; height: 80px; margin-bottom: 20px; }
+      .logo-img    { width: 220px; }
+      .logo-subtitle { font-size: 20px; letter-spacing: 6px; margin-top: 10px; }
+      .login-card  {
+        max-width: 480px;
+        padding: 44px 48px 40px;
+        border-radius: 28px;
+      }
+      .card-title  { font-size: 24px; margin-bottom: 32px; letter-spacing: 3px; }
+      .field       { margin-bottom: 20px; }
+      .field label { font-size: 12px; letter-spacing: 2px; margin-bottom: 8px; }
+      .input-wrap input {
+        padding: 16px 50px 16px 20px;
+        font-size: 16px;
+        border-radius: 50px;
+      }
+      .input-icon  { right: 18px; }
+      .eye-btn     { right: 14px; }
+      .btn-login   {
+        font-size: 17px;
+        min-height: 58px;
+        letter-spacing: 3px;
+        border-radius: 50px;
+      }
+      .card-footer { font-size: 12px; margin-top: 14px; }
+    }
+
+    /* ── Large desktop (≥ 1440px) ──────────────── */
+    @media (min-width: 1440px) {
+      .page-wrap   { gap: 96px; padding: 60px 120px; }
+      .ar-icon     { width: 90px; height: 90px; margin-bottom: 24px; }
+      .logo-img    { width: 200px; }
+      .logo-subtitle { font-size: 16px; letter-spacing: 7px; }
+      .login-card  { max-width: 520px; padding: 52px 56px 48px; }
+      .card-title  { font-size: 26px; margin-bottom: 36px; }
+      .field       { margin-bottom: 22px; }
+      .input-wrap input { padding: 18px 54px 18px 22px; font-size: 17px; }
+      .btn-login   { font-size: 18px; min-height: 62px; }
+      .card-footer { font-size: 13px; margin-top: 16px; }
+    }

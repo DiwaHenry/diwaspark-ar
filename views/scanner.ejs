@@ -1,0 +1,241 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="/js/rotation.js"></script>
+    <script src="/js/smooth-position.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <title>DIWA SPARK — Scanner</title>
+  </head>
+  <body>
+
+    <!-- Fullscreen Prompt -->
+    <div id="fullscreen-prompt" class="hidden">
+      <div class="particles" id="particles1"></div>
+      <div class="fullscreen-icon">
+        <svg viewBox="0 0 24 24" fill="white">
+          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+      </div>
+      <div class="fullscreen-title">Ready for <img src="assets/images/AR.png" alt="AR" onerror="this.style.display='none'" > Experience</div>
+      <div class="fullscreen-subtitle">Tap the button below to enter fullscreen mode for the best augmented reality experience</div>
+      <button class="fullscreen-button" id="enter-fullscreen-btn">ENTER FULL SCREEN</button>
+    </div>
+
+    <!-- logo on the scene -->
+    <div class="ar-logo">
+      <img src="assets/images/diwaspark_transparent.png"/>
+    </div>
+    <div class="sem-logo">
+      <img src="assets/images/SEM_logo.png"/>
+    </div>
+
+    <!-- Close Button -->
+    <button id="close-btn" onclick="logout()" aria-label="Close scanner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Scanning Overlay -->
+    <div id="scanning-overlay" class="hidden">
+        <div class="inner">
+	        <img src="assets/images/Diwa SPARK_Emblem.png"/>
+	      <div class="scanline"></div>
+      </div>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div id="zoom-controls">
+      <button id="zoom-in">+</button>
+      <button id="zoom-out">-</button>
+    </div>
+
+    <!-- AR Scene -->
+    <a-scene mindar-image="imageTargetSrc: /BB-ISSUE1-26-27.mind; uiError:no; uiScanning: #scanning-overlay; filterMinCF:0.001; filterBeta: 0.01; warmupTolerance: 5; missTolerance: 5" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights, antialias: true, alpha: true" vr-mode-ui="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Target 0: From Water to Ice -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/FromWatertoIceV2.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="From Water to Ice" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Ice forms when water reaches its freezing point, which is 0˚C. Because ice is less dense than liquid water, it floats on the water’s surface." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 1: Invisible Builders of Matter -->
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/InvisibleBuildersOfMatter.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Invisible Builders of Matter" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="The atom is the basic building block of matter. It consists of three types of subatomic particles: protons, neutrons, and electrons." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 2: Natures Solar Panel -->
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/NaturesSolarPanel.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Nature’s Solar Panel" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="The chloroplast is an organelle found in plants and algae. It converts light energy into chemical energy through the process of photosynthesis." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 3: Human Gorilla Connection -->
+      <a-entity mindar-image-target="targetIndex: 3">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/HumanGorillaConnection.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Human-Gorilla Connection" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Gorillas are among our closest living relatives. They share around 98.3% of our DNA." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 4: Earths Frigid And Arid Neighbor -->
+      <a-entity mindar-image-target="targetIndex: 4">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/EarthsFrigidAndAridNeighbor.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Earth’s Frigid and Arid Neighbor" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Mars is the fourth planet from the sun in our solar system. It is about half the size of Earth, and has a cold and dry surface." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 5: Our Galaxy -->
+      <a-entity mindar-image-target="targetIndex: 5">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/OurGalaxy.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Our Galaxy" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="The Milky Way is home to several hundred billion stars, including our sun. It is about 100 000 light-years in diameter and roughly 1000 light-years in thickness." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 6: A Fiery Vent In Earths Crust -->
+      <a-entity mindar-image-target="targetIndex: 6">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/AFieryVentInEarthsCrust.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="A Fiery Vent in Earth’s Crust" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="A volcano is an opening in Earth’s surface. Through this opening, gas, magma, and ash can escape from beneath the crust." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+
+      <!-- Target 7: Crocodiles Uncovered -->
+      <a-entity mindar-image-target="targetIndex: 7">
+        <a-gltf-model rotation="0 0 0" position="-0.6 0 0.1" scale="0.45 0.45 0.45" src="assets/3D/CrocodilesUncovered.glb" touch-rotate ></a-gltf-model>
+        <a-plane position="0.6 0 0" width="1.1" height="0.7" color="#ffffff" opacity="0.95" material="shader: flat">
+          <a-text value="Crocodiles Uncovered" 
+                  color="#667eea" 
+                  align="center" 
+                  width="1" 
+                  position="0 0.25 0.01"
+                  wrap-count="28"></a-text>
+          <a-text value="Crocodiles are semiaquatic reptiles with long snouts, or muzzles. They live in diverse habitats, including rivers, estuaries, creeks, and swamps." 
+                  color="#333333" 
+                  align="center" 
+                  width="1" 
+                  position="0 -0.08 0.01"
+                  wrap-count="32"></a-text>
+        </a-plane>
+      </a-entity>
+    </a-scene>
+   <script src="/js/zoom.js"></script>
+   <script src="/js/app.js"></script>
+   <script>
+      async function logout(){
+        const refreshToken = getCookie('refreshToken');
+        console.log(refreshToken);
+
+        await fetch('/api/auth/logout', {
+          method: "post",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: refreshToken })
+        });
+
+        document.cookie = "accessToken=; Max-Age=0";
+        document.cookie = "refreshToken=; Max-Age=0";
+        window.location.href = "/";
+      }
+
+      function getCookie(name){
+        const value = document.cookie;
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+   </script>
+  </body>
+</html>
