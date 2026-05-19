@@ -55,6 +55,7 @@ function hideSplashScreen() {
 window.addEventListener('DOMContentLoaded', () => {
     if(getOrientation() === "portrait"){
       reminder.style.display = "block";
+      window.location.replace("/rendering");
     }else{
       setTimeout(() => {
         hideSplashScreen();
@@ -67,6 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
          window.location.replace("/scanner");
       }else{
         reminder.style.display = "block";
+        window.location.replace("/rendering");
       }
     })
 
